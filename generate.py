@@ -210,7 +210,10 @@ a:hover { text-decoration: underline; }
 def build_site():
     """Main entry point: build the site under the `site` directory."""
     # Load configuration
-    config_path = os.path.join(os.path.dirname(__file__), "..", "config.json")
+    # Load the config.json from the same directory as this script. The
+    # repository layout puts generate.py in the top level, so use __file__'s
+    # directory directly rather than going up a directory.
+    config_path = os.path.join(os.path.dirname(__file__), "config.json")
     with open(config_path, encoding="utf-8") as cf:
         config = json.load(cf)
 
@@ -221,9 +224,11 @@ def build_site():
     trending = calculate_trending(ranks, top_n=100)
 
     # Prepare output directory
-    output_dir = os.path.join(os.path.dirname(__file__), "..", "site")
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    # Write all generated pages into a "site" subdirectory that sits
+    # alongside this script. Using exist_ok=True avoids errors on
+    # subsequent runs.
+    output_dir = os.path.join(os.path.dirname(__file__), "site")
+    os.makedirs(output_dir, exist_ok=True)
 
     # Write CSS
     write_assets(output_dir)
