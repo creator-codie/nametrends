@@ -17,10 +17,10 @@ jobs:
           python-version: '3.x'
       - name: Generate static site
         run: |
-          python NameTrends_autonomous_site_v3/scripts/generate.py
+      python generate.py
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: NameTrends_autonomous_site_v3/site
-          keep_files: true
+publish_dir: site     
+keep_files: true
